@@ -26,18 +26,16 @@ class Order(
      */
     fun removeProductById(productId: Int) {
         val index = products.indexOfFirst { it.id == productId }
-        _products.removeAt(index)
+        if (index != -1) {
+            _products.removeAt(index)
+        }
     }
 
     /**
      * Returns the total price of all products in the order.
      */
     override fun calculateTotal(): Int {
-        var total = 0
-        for (product in _products) {
-            total += product.price
-        }
-        return total
+        return _products.sumOf { it.price }
     }
 
     /**
@@ -56,6 +54,6 @@ class Order(
      * If [reason] is null, use "Unknown reason".
      */
     fun cancel(reason: String?) {
-        status = OrderStatus.Cancelled(reason?: "Unknown reason")
+        status = OrderStatus.Cancelled(reason ?: "Unknown reason")
     }
 }
